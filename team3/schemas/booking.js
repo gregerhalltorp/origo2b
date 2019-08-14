@@ -6,7 +6,7 @@ const booking = gql`
   type Booking {
     id: ID!
     modelVersion: Int
-    extraGroups: [PassengerExtraGroup]
+    extraGroups(views: [ID]!, extraGroupKeys: [ID]): [PassengerExtraGroup]
   }
 
   type PassengerExtraGroup {
@@ -19,7 +19,7 @@ const booking = gql`
 
 const query = gql`
   extend type Query {
-    booking(id: ID!): Booking
+    booking(id: ID!, modelVersion: ID): Booking
   }
 `;
 

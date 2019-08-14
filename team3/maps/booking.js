@@ -1,4 +1,4 @@
-const map = ({ bookingId: id, modelVersion }) => {
+const map = ({ bookingId: id = 'abc', modelVersion } = {}) => {
   return {
     id,
     modelVersion
