@@ -34,6 +34,7 @@ module.exports = ({ passengerReference, gender = '', age, dateOfBirth, ...rest }
       value: age,
       dateOfBirth,
       category: passengerAgeCategory(age),
+      dateOfBirthLocale: passengerBirthDay(dateOfBirth),
     },
     gender: gender.toLocaleLowerCase() !== 'unknown' ? gender : null,
     id: passengerReference,
