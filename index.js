@@ -1,4 +1,4 @@
 require('core-js/stable');
 require('regenerator-runtime/runtime');
 require('@babel/register');
-require('./server');
+require('./src/server');
