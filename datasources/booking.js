@@ -1,6 +1,7 @@
-const { RESTDataSource } = require('apollo-datasource-rest');
-const { valueIn } = require('@tcne/react-utils/common');
-var uriTemplates = require('uri-templates');
+/* eslint-disable no-console */
+import { RESTDataSource } from 'apollo-datasource-rest';
+import { valueIn } from '@tcne/react-utils/common';
+import uriTemplates from 'uri-templates';
 
 class BH2DataSource extends RESTDataSource {
   constructor(url = 'http://bookinghub-2.test.int/api/') {
@@ -43,12 +44,13 @@ class BH2DataSource extends RESTDataSource {
     const changeExtrasLink = valueIn(booking, ['_links', 'change-extras', 'href']);
     const changeExtras = await this.get(changeExtrasLink);
     const offersLink = valueIn(changeExtras, ['_links', 'extra-offers', 'href']);
-    const extraOffersLinks = views.map(view =>
-      uriTemplates(offersLink).fill({ View: view, ExtraGroupKeys: groupKeys })
-    );
+    const extraOffersLinks = views.map((view) => uriTemplates(offersLink).fill({
+      View: view,
+      ExtraGroupKeys: groupKeys,
+    }));
     const extraOffersResults = await Promise.all(
-      extraOffersLinks.map(link => this.get(link))
-    ).catch(error => {
+      extraOffersLinks.map((link) => this.get(link)),
+    ).catch((error) => {
       console.log('Unable to get extra offers ', error);
     });
     return extraOffersResults;
@@ -62,4 +64,4 @@ class BH2DataSource extends RESTDataSource {
   }
 }
 
-module.exports = BH2DataSource;
+export default BH2DataSource;

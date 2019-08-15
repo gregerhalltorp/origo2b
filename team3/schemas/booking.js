@@ -1,7 +1,5 @@
-const { gql } = require('apollo-server');
-const bookingResolver = require('../resolvers/booking').booking;
-const extraGroupsResolver = require('../resolvers/booking').extraGroups;
-const passengersResolver = require('../resolvers/booking').passengers;
+import { gql } from 'apollo-server';
+import { bookingResolver, extraGroupsResolver, passengersResolver } from '../resolvers/booking';
 
 const booking = gql`
   type Booking {
@@ -51,7 +49,9 @@ const query = gql`
   }
 `;
 
-const resolverMappings = [
+export const schema = [booking, query];
+
+export const resolverMappings = [
   {
     Query: {
       booking: bookingResolver,
@@ -62,8 +62,3 @@ const resolverMappings = [
     },
   },
 ];
-
-module.exports = {
-  schema: [booking, query],
-  resolverMappings,
-};

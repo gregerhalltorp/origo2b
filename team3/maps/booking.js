@@ -1,8 +1,6 @@
-const map = ({ bookingId: id = 'abc', modelVersion } = {}) => {
-  return {
-    id,
-    modelVersion
-  };
-};
+const map = ({ bookingId: id = 'abc', modelVersion } = {}) => ({
+  id,
+  modelVersion,
+});
 
-module.exports = map;
+export default map;

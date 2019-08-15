@@ -15,28 +15,27 @@ function passengerAgeCategory(age) {
 }
 
 function passengerBirthDay(dateOfBirth, marketUnit = { text: 'VS' }) {
-  dateOfBirth = dateOfBirth || '';
-  const parts = (dateOfBirth.split('T').shift() || '').split('-');
+  const dob = dateOfBirth || '';
+  const parts = (dob.split('T').shift() || '').split('-');
   if (parts.length !== 3) {
     return null;
   }
 
   return marketUnit.text === 'VS'
-  ? `${parts[0].substr(2, 2)}${parts[1]}${parts[2]}`
-  : `${parts[2]}${parts[1]}${parts[0].substr(2, 2)}`;
+    ? `${parts[0].substr(2, 2)}${parts[1]}${parts[2]}`
+    : `${parts[2]}${parts[1]}${parts[0].substr(2, 2)}`;
 }
 
-module.exports = ({ passengerReference, gender = '', age, dateOfBirth, ...rest } = {}) => {
-  console.log('rest', { ...rest });
-  return {
-    ...rest,
-    age: {
-      value: age,
-      dateOfBirth,
-      category: passengerAgeCategory(age),
-      dateOfBirthLocale: passengerBirthDay(dateOfBirth),
-    },
-    gender: gender.toLocaleLowerCase() !== 'unknown' ? gender : null,
-    id: passengerReference,
-  };
-};
+export default ({
+  passengerReference, gender = '', age, dateOfBirth, ...rest
+} = {}) => ({
+  ...rest,
+  age: {
+    value: age,
+    dateOfBirth,
+    category: passengerAgeCategory(age),
+    dateOfBirthLocale: passengerBirthDay(dateOfBirth),
+  },
+  gender: gender.toLocaleLowerCase() !== 'unknown' ? gender : null,
+  id: passengerReference,
+});

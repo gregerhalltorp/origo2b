@@ -1,3 +1,3 @@
-const booking = require('../schemas/booking').resolverMappings;
+import {resolverMappings as booking} from '../schemas/booking';
 
-module.exports = [...booking];
+export default [...booking];

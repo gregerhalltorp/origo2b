@@ -1,5 +1,5 @@
-const { gql } = require('apollo-server');
-const booking = require('./booking').schema;
+import { gql } from 'apollo-server';
+import { schema as booking } from './booking';
 
 const SchemaDefinition = gql`
   type Query {
@@ -7,4 +7,4 @@ const SchemaDefinition = gql`
   }
 `;
 
-module.exports = [SchemaDefinition, ...booking];
+export default [SchemaDefinition, ...booking];
