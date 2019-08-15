@@ -9,7 +9,7 @@ class BH2DataSource extends RESTDataSource {
   }
 
   willSendRequest(request) {
-    console.log(this.context.bookingMeta);
+    console.log('metaData', this.context.bookingMeta);
     const modelVersion = valueIn(this.context, ['bookingMeta', 'modelVersion']);
     if (modelVersion) {
       request.headers.append('modelVersion', modelVersion);
@@ -52,6 +52,13 @@ class BH2DataSource extends RESTDataSource {
       console.log('Unable to get extra offers ', error);
     });
     return extraOffersResults;
+  }
+
+  async getPassengerInformation(id) {
+    const booking = await this.getBooking(id);
+    const passengerInformationLink = valueIn(booking, ['_links', 'passenger-information', 'href']);
+    const passengerInformation = await this.get(passengerInformationLink);
+    return passengerInformation;
   }
 }
 

@@ -1,12 +1,40 @@
 const { gql } = require('apollo-server');
-const bookingResolver = require('../resolvers/booking.js').booking;
-const extraGroupResolver = require('../resolvers/booking').extraGroups;
+const bookingResolver = require('../resolvers/booking').booking;
+const extraGroupsResolver = require('../resolvers/booking').extraGroups;
+const passengersResolver = require('../resolvers/booking').passengers;
 
 const booking = gql`
   type Booking {
     id: ID!
     modelVersion: Int
+    passengers: [Passenger]
     extraGroups(views: [ID]!, extraGroupKeys: [ID]): [PassengerExtraGroup]
+  }
+
+  type Passenger {
+    id: ID!
+    firstName: String
+    lastName: String
+    name: String
+    age: PassengerAge
+    number: Int
+    gender: String
+    leadPassenger: Boolean
+  }
+
+  type PassengerAge {
+    value: Int
+    category: PassengerAgeCategory
+    dateOfBirth: String
+    # Correct 6 digit format for market unit
+    dateOfBirthLocale: String
+  }
+
+  enum PassengerAgeCategory {
+    ADULT
+    YOUTH
+    CHILD
+    INFANT
   }
 
   type PassengerExtraGroup {
@@ -29,7 +57,8 @@ const resolverMappings = [
       booking: bookingResolver,
     },
     Booking: {
-      extraGroups: extraGroupResolver,
+      passengers: passengersResolver,
+      extraGroups: extraGroupsResolver,
     },
   },
 ];
