@@ -1,3 +1,3 @@
-import {resolverMappings as booking} from '../schemas/booking';
+import { resolverMappings as booking } from '../schemas/booking';
 
-export default [...booking];
+export default { booking };

@@ -2,7 +2,11 @@ import { gql } from 'apollo-server';
 import { bookingResolver, extraGroupsResolver, passengersResolver } from '../resolvers/booking';
 
 const booking = gql`
-  type Booking {
+  extend type Query {
+    booking(id: ID!, modelVersion: ID): Booking
+  }
+
+  type Booking @key(fields: "id") {
     id: ID!
     modelVersion: Int
     passengers: [Passenger]
@@ -43,22 +47,19 @@ const booking = gql`
   }
 `;
 
-const query = gql`
-  extend type Query {
-    booking(id: ID!, modelVersion: ID): Booking
-  }
-`;
+export const schema = booking;
 
-export const schema = [booking, query];
-
-export const resolverMappings = [
-  {
-    Query: {
-      booking: bookingResolver,
-    },
-    Booking: {
-      passengers: passengersResolver,
-      extraGroups: extraGroupsResolver,
-    },
+export const resolverMappings = {
+  Query: {
+    booking: bookingResolver,
   },
-];
+  Booking: {
+    __resolveReference(b, { dataSources }) {
+      console.log('jadahej');
+      return dataSources.BH2.getBooking(b.id);
+    },
+    id: ({ bookingId }) => bookingId,
+    passengers: passengersResolver,
+    extraGroups: extraGroupsResolver,
+  },
+};

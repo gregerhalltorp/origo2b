@@ -3,8 +3,9 @@ import bookingMapper from '../maps/booking';
 import passengerMapper from '../maps/passenger';
 
 export const bookingResolver = async (_, { id }, { dataSources }) => {
+  console.log('alsdkfjalskdfjlkasjdflkajsdflkjaslkfjasldfj');
   const bookingResult = await dataSources.BH2.getBooking(id);
-  return bookingMapper(bookingResult);
+  return bookingResult;
 };
 
 export const passengersResolver = async ({ id }, _, { dataSources }) => {
