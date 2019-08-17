@@ -8,6 +8,7 @@ env:
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
+  expect: true
 parserOptions:
   ecmaFeatures:
     jsx: true

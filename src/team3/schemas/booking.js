@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server';
 import { bookingResolver, extraGroupsResolver, passengersResolver } from '../resolvers/booking';
 
-const booking = gql`
+const typeDefs = gql`
   extend type Query {
     booking(id: ID!, modelVersion: ID): Booking
   }
@@ -53,7 +53,7 @@ const resolvers = {
   },
   Booking: {
     __resolveReference(b, { dataSources }) {
-      console.log('jadahej');
+      console.log('__resolveReference');
       return dataSources.BH2.getBooking(b.id);
     },
     id: ({ bookingId }) => bookingId,
@@ -62,4 +62,4 @@ const resolvers = {
   },
 };
 
-export default [{ typeDefs: booking, resolvers }];
+export default [{ typeDefs, resolvers }];

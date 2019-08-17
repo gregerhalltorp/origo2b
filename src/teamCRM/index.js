@@ -1,5 +1,4 @@
-import schema from './schemas';
-import resolverMappings from './resolvers';
+import schemaModules from './schemas';
 import server from '../common/server';
 
-server(schema, resolverMappings, 4002);
+server(schemaModules, 4002);

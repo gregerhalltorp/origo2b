@@ -1,15 +1,13 @@
 import { valueIn } from '@tcne/react-utils/common';
-import bookingMapper from '../maps/booking';
 import passengerMapper from '../maps/passenger';
 
 export const bookingResolver = async (_, { id }, { dataSources }) => {
-  console.log('alsdkfjalskdfjlkasjdflkajsdflkjaslkfjasldfj');
   const bookingResult = await dataSources.BH2.getBooking(id);
   return bookingResult;
 };
 
-export const passengersResolver = async ({ id }, _, { dataSources }) => {
-  const passengersResult = await dataSources.BH2.getPassengerInformation(id);
+export const passengersResolver = async (booking, _, { dataSources }) => {
+  const passengersResult = await dataSources.BH2.getPassengerInformation(booking);
   const passengers = valueIn(passengersResult, 'passengers', []).map(passengerMapper);
   // Här ska in customer grejer
   // /home/greger/projects/origo/src/resolvers/team3Checkout/query/passengersForBooking.js
@@ -17,7 +15,7 @@ export const passengersResolver = async ({ id }, _, { dataSources }) => {
 };
 
 export const extraGroupsResolver = async (
-  { id },
+  booking,
   { views, extraGroupKeys },
   { dataSources: { BH2 } },
 ) => {
@@ -28,8 +26,7 @@ export const extraGroupsResolver = async (
     ? null
     : extraGroupKeys;
 
-  const bookingResult = await BH2.getBooking(id);
-  const extraOffersResult = await BH2.getExtraOffers(id, views, groupKeysToFetch);
+  const extraOffersResult = await BH2.getExtraOffers(booking, views, groupKeysToFetch);
   // console.log(extraOffersResults);
   return null;
 };
