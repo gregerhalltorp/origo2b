@@ -2,7 +2,7 @@
 
 import { ApolloServer } from 'apollo-server';
 import { buildFederatedSchema } from '@apollo/federation';
-import BH2DataSource from '../datasources/booking';
+import BH2DataSource from './datasources/booking';
 import querySchema from './querySchema';
 import queryResolver from './queryResolver';
 

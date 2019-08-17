@@ -47,9 +47,7 @@ const booking = gql`
   }
 `;
 
-export const schema = booking;
-
-export const resolverMappings = {
+const resolvers = {
   Query: {
     booking: bookingResolver,
   },
@@ -63,3 +61,5 @@ export const resolverMappings = {
     extraGroups: extraGroupsResolver,
   },
 };
+
+export default [{ typeDefs: booking, resolvers }];
