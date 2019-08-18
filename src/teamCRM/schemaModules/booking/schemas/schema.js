@@ -1,5 +1,5 @@
 import { gql } from 'apollo-server';
-import { paymentResolver } from '../resolvers/booking';
+import { paymentResolver } from '../resolvers';
 
 const typeDefs = gql`
   extend type Booking @key(fields: "id") {
