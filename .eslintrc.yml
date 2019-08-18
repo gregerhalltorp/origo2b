@@ -22,3 +22,4 @@ rules:
     - error
     - allow:
         - __resolveReference
+  import/prefer-default-export: off

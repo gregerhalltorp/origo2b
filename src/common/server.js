@@ -4,6 +4,16 @@ import { ApolloServer, gql } from 'apollo-server';
 import { buildFederatedSchema } from '@apollo/federation';
 import BH2DataSource from './datasources/BH2';
 
+// TODO: Refaktorera strukturen till moduler istf. schema/resolvers
+// TODO: Bryt ut datumtypen till en egen fil
+// TODO: Testa att sluta extenda Query för att se om det går att slippa
+// TODO: Undersök om https://github.com/okgrow/merge-graphql-schemas kan ge nåt här
+
+// TODO: Byt till apollo-express
+// TODO: Ta med bitarna från server i origo (header-grejer osv)
+
+// TODO: Undersök hur en cache ska kunna funka
+
 const dateThingy = gql`
   # Date according to general requirements
   type Date {
