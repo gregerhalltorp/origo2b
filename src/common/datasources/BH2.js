@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { RESTDataSource } from 'apollo-datasource-rest';
 import { valueIn } from '@tcne/react-utils/common';
 import uriTemplates from 'uri-templates';
