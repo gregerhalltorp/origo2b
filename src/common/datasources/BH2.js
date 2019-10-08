@@ -10,7 +10,7 @@ class BH2DataSource extends RESTDataSource {
   }
 
   willSendRequest(request) {
-    console.log('metaData', this.context.bookingMeta);
+    // console.log('metaData', this.context.bookingMeta);
     const modelVersion = valueIn(this.context, ['bookingMeta', 'modelVersion']);
     if (modelVersion) {
       request.headers.append('modelVersion', modelVersion);
@@ -20,7 +20,7 @@ class BH2DataSource extends RESTDataSource {
   cacheKeyFor(request) {
     const modelVersion = valueIn(this.context, ['bookingMeta', 'modelVersion']);
     const cacheKey = `${request.url}|${modelVersion || ''}`;
-    console.log('cacheKey', cacheKey);
+    // console.log('cacheKey', cacheKey);
     return cacheKey;
   }
 
@@ -31,7 +31,7 @@ class BH2DataSource extends RESTDataSource {
     const bResult = await this.get(bLink);
     const sbLink = valueIn(bResult, ['_links', 'single-booking', 'href']);
     const bookingLink = uriTemplates(sbLink).fill({ BookingId: id });
-    console.log('bookingLink', bookingLink);
+    // console.log('bookingLink', bookingLink);
     const result = await this.get(bookingLink);
     if (result.modelVersion) {
       this.context.bookingMeta = this.context.bookingMeta || {};
@@ -74,13 +74,15 @@ class BH2DataSource extends RESTDataSource {
   }
 
   async getLink(link) {
-    const result = await this.get(link);
+    const result = await this.get(link, null, {
+      headers: {
+        'Auth-UserId': this.context.vitsUser,
+      },
+    });
     return result;
   }
 
   async getFlightOffers(input) {
-    console.log('getFlightOffers', input);
-
     const baseUrlResult = await this.get('');
     const queryUrl = valueIn(baseUrlResult, ['_links', 'query', 'href']);
     const qResult = await this.get(queryUrl);
@@ -90,13 +92,13 @@ class BH2DataSource extends RESTDataSource {
       DestinationLocationQuery: input.destinationLocationQuery
         .filter((x) => x)
         .join(','),
-      DepartureDateFrom: input.departureDateFrom, // moment(input.departureDateFrom, ['YYYYMMDD', 'D.M.YYYY', 'D-M-YYYY', 'YYYY-M-D']).format('YYYY-MM-DD'),
+      DepartureDateFrom: input.departureDateFrom, // TODO --> moment(input.departureDateFrom, ['YYYYMMDD', 'D.M.YYYY', 'D-M-YYYY', 'YYYY-M-D']).format('YYYY-MM-DD'),
       NumberOfAdults: input.ages.length,
-      NumberOfChildren: 0,
+      NumberOfChildren: 0, // TODO
       TripTypes: input.tripTypes,
-      ChildAges: '',
+      ChildAges: '', // TODO
       DurationGroup: input.duration,
-      MarketUnitKey: 'VS',
+      MarketUnitKey: this.context.marketUnit.text,
       NumberOfFlightOffers: input.nrOfFlightOffers,
       SearchAlternativeDurations: true,
     });
@@ -104,7 +106,6 @@ class BH2DataSource extends RESTDataSource {
     const templatedFlightOfferResultUrl = valueIn(flightOffers, ['_links', 'results', 'href']);
 
     return this.getLink(templatedFlightOfferResultUrl);
-
   }
 }
 

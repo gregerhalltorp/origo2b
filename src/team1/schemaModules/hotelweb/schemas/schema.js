@@ -2,7 +2,7 @@ import { gql } from 'apollo-server';
 import * as r from '../resolvers';
 
 const typeDefs = gql`
-  type Query {
+  extend type Query {
     hotelwebHotel(wvId: ID): HotelwebHotel
   }
 

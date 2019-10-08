@@ -3,13 +3,24 @@ import { valueIn } from '@tcne/react-utils/common';
 import { flightOffersResolver } from '../resolvers/flightOffersResolver';
 
 const typeDefs = gql`
-  type Query {
-    flightOffers(key: String filterInput: FlightOfferFilterInput): [FlightOffer!]!
+
+  extend type Query {
+    flightOffers(key: String filterInput: FlightOfferFilterInput): FlightOffers
   }
 
   enum BH2_TRIP_TYPES {
     PACKAGE
     FLIGHTONLY
+  }
+
+  type BookingHubPaginationLinks {
+    prev: String
+    next: String
+  }
+
+  type FlightOffers {
+    flightOffers: [FlightOffer!]!
+    pagination: BookingHubPaginationLinks!
   }
 
   input FlightOfferFilterInput {
@@ -41,16 +52,9 @@ const typeDefs = gql`
     date: Date
   }
 
-  type FlightHotel {
-    name: String
-    description: String
-    id: ID
-  }
-
   type Flight {
     flightKey: String
     departure: FlightDeparture
-    hotel: FlightHotel
   }
 
   type FlightOffer {
@@ -63,6 +67,14 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     flightOffers: flightOffersResolver,
+  },
+  FlightOffers: {
+    flightOffers: (x) => x,
+    pagination: (x) => x,
+  },
+  BookingHubPaginationLinks: {
+    prev: () => 'prev',
+    next: () => 'next',
   },
   FlightOffer: {
     out: (flightOffer) => valueIn(flightOffer, '_embedded.out.0'),
@@ -81,10 +93,6 @@ const resolvers = {
   },
   FlightDepartureMeta: {
     code: ({ DepartureCode }) => DepartureCode,
-  },
-  FlightHotel: {
-    name: ({ name2 }) => name2,
-    description: ({ description2 }) => description2,
   },
 };
 
