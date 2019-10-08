@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start-team1": "node index.js team1",
+    "start-team3": "node index.js team3",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./"
   },

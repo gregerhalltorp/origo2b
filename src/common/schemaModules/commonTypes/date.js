@@ -33,4 +33,11 @@ const typeDefs = gql`
   }
 `;
 
-export default [{ typeDefs }];
+export default [{
+  typeDefs,
+  resolvers: {
+    Date: {
+      long: (a) => new Date(a).toISOString(),
+    },
+  },
+}];

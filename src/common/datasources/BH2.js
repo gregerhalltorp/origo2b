@@ -77,6 +77,35 @@ class BH2DataSource extends RESTDataSource {
     const result = await this.get(link);
     return result;
   }
+
+  async getFlightOffers(input) {
+    console.log('getFlightOffers', input);
+
+    const baseUrlResult = await this.get('');
+    const queryUrl = valueIn(baseUrlResult, ['_links', 'query', 'href']);
+    const qResult = await this.get(queryUrl);
+    const templatedFlightOfferUrl = valueIn(qResult, ['_links', 'flight-offers', 'href']);
+    const flightOfferUrl = uriTemplates(templatedFlightOfferUrl).fill({
+      DepartureQuery: input.departureQuery,
+      DestinationLocationQuery: input.destinationLocationQuery
+        .filter((x) => x)
+        .join(','),
+      DepartureDateFrom: input.departureDateFrom, // moment(input.departureDateFrom, ['YYYYMMDD', 'D.M.YYYY', 'D-M-YYYY', 'YYYY-M-D']).format('YYYY-MM-DD'),
+      NumberOfAdults: input.ages.length,
+      NumberOfChildren: 0,
+      TripTypes: input.tripTypes,
+      ChildAges: '',
+      DurationGroup: input.duration,
+      MarketUnitKey: 'VS',
+      NumberOfFlightOffers: input.nrOfFlightOffers,
+      SearchAlternativeDurations: true,
+    });
+    const flightOffers = await this.get(flightOfferUrl);
+    const templatedFlightOfferResultUrl = valueIn(flightOffers, ['_links', 'results', 'href']);
+
+    return this.getLink(templatedFlightOfferResultUrl);
+
+  }
 }
 
 export default BH2DataSource;
