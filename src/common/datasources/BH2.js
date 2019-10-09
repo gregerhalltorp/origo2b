@@ -1,6 +1,9 @@
 import { RESTDataSource } from 'apollo-datasource-rest';
 import { valueIn } from '@tcne/react-utils/common';
 import uriTemplates from 'uri-templates';
+import { moment } from '../utils/date';
+
+const formatDateForBH2 = (value) => moment(value, ['YYYYMMDD', 'D.M.YYYY', 'D-M-YYYY', 'YYYY-M-D']).format('YYYY-MM-DD');
 
 // TODO: Move link stuff to reducers?
 class BH2DataSource extends RESTDataSource {
@@ -82,6 +85,12 @@ class BH2DataSource extends RESTDataSource {
     return result;
   }
 
+  async getFlightOffersByKey(key) {
+    const result = await this.getLink(key);
+
+    return this.getLink(valueIn(result, '_links.results.href'));
+  }
+
   async getFlightOffers(input) {
     const baseUrlResult = await this.get('');
     const queryUrl = valueIn(baseUrlResult, ['_links', 'query', 'href']);
@@ -92,7 +101,7 @@ class BH2DataSource extends RESTDataSource {
       DestinationLocationQuery: input.destinationLocationQuery
         .filter((x) => x)
         .join(','),
-      DepartureDateFrom: input.departureDateFrom, // TODO --> moment(input.departureDateFrom, ['YYYYMMDD', 'D.M.YYYY', 'D-M-YYYY', 'YYYY-M-D']).format('YYYY-MM-DD'),
+      DepartureDateFrom: formatDateForBH2(input.departureDateFrom),
       NumberOfAdults: input.ages.length,
       NumberOfChildren: 0, // TODO
       TripTypes: input.tripTypes,

@@ -32,6 +32,7 @@ const server = (schemaModules, port = 4000) => {
       const context = {};
       context.marketUnit = getMarketUnit(req.headers['x-origo-mucd'] || req.headers.marketunit);
       context.vitsUser = getVitsUser(req.headers, context.marketUnit);
+      context.callerApp = req.headers['x-caller-app'];
       return context;
     },
   });

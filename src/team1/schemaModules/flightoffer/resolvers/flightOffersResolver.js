@@ -1,12 +1,14 @@
-import { valueIn } from '@tcne/react-utils/common';
+import { decode } from '../../../../common/utils/crypto';
 
-export async function flightOffersResolver(_, { key, filterInput }, { dataSources, marketUnit }) {
-  let flightOfferResult;
-  if (key) {
-    flightOfferResult = await dataSources.BH2.getLink(key);
-  } else {
-    flightOfferResult = await dataSources.BH2.getFlightOffers(filterInput, marketUnit);
+export async function flightOffersResolver(_, { key: encodedKey, filterInput }, context) {
+  const { dataSources, marketUnit } = context;
+
+  if (encodedKey) {
+    const key = decode(encodedKey, context);
+    return dataSources.BH2.getFlightOffersByKey(key);
   }
 
-  return valueIn(flightOfferResult, '_embedded.flight-offer', []);
+  const response = await dataSources.BH2.getFlightOffers(filterInput, marketUnit);
+
+  return response;
 }

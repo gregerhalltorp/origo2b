@@ -1,11 +1,12 @@
 import { gql } from 'apollo-server';
 import { valueIn } from '@tcne/react-utils/common';
 import { flightOffersResolver } from '../resolvers/flightOffersResolver';
+import { encode } from '../../../../common/utils/crypto';
 
 const typeDefs = gql`
 
   extend type Query {
-    flightOffers(key: String filterInput: FlightOfferFilterInput): FlightOffers
+    flightOffers(key: String filterInput: FlightOfferFilterInput): FlightOffers!
   }
 
   enum BH2_TRIP_TYPES {
@@ -49,7 +50,9 @@ const typeDefs = gql`
     key: String
     code: String
     name: String
-    date: Date
+    departureDate: Date
+    arivalDate: Date
+    flightTime: Duration
   }
 
   type Flight {
@@ -69,12 +72,12 @@ const resolvers = {
     flightOffers: flightOffersResolver,
   },
   FlightOffers: {
-    flightOffers: (x) => x,
-    pagination: (x) => x,
+    flightOffers: (res) => valueIn(res, '_embedded.flight-offer', []),
+    pagination: (res) => valueIn(res, '_links', {}),
   },
   BookingHubPaginationLinks: {
-    prev: () => 'prev',
-    next: () => 'next',
+    prev: (links, _, context) => encode(valueIn(links, 'previous.href'), context),
+    next: (links, _, context) => encode(valueIn(links, 'next.href'), context),
   },
   FlightOffer: {
     out: (flightOffer) => valueIn(flightOffer, '_embedded.out.0'),
@@ -89,7 +92,8 @@ const resolvers = {
     key: ({ departureKey }) => departureKey,
     code: ({ providerKeys }) => valueIn(providerKeys, 'DepartureCode'),
     name: ({ departureName }) => departureName,
-    date: ({ departureDateTimeLocal }) => departureDateTimeLocal,
+    departureDate: ({ departureDateTimeLocal }) => departureDateTimeLocal,
+    arivalDate: ({ arrivalDateTimeLocal }) => arrivalDateTimeLocal,
   },
   FlightDepartureMeta: {
     code: ({ DepartureCode }) => DepartureCode,
