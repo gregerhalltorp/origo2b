@@ -2,6 +2,8 @@ import { gql } from 'apollo-server';
 import { validateAndFormatDate } from '../../utils/date';
 
 const typeDefs = gql`
+  directive @encrypted on FIELD_DEFINITION | INPUT_FIELD_DEFINITION 
+
   # Date according to general requirements
   type Date {
     # e.g. Mån 11 sep 2017

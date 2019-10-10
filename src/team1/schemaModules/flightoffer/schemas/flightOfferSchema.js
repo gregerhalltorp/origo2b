@@ -1,12 +1,11 @@
 import { gql } from 'apollo-server';
 import { valueIn } from '@tcne/react-utils/common';
 import { flightOffersResolver } from '../resolvers/flightOffersResolver';
-import { encode } from '../../../../common/utils/crypto';
 
 const typeDefs = gql`
 
   extend type Query {
-    flightOffers(key: String filterInput: FlightOfferFilterInput): FlightOffers!
+    flightOffers(input: FlightOfferFilterInput): FlightOffers!
   }
 
   enum BH2_TRIP_TYPES {
@@ -15,8 +14,8 @@ const typeDefs = gql`
   }
 
   type BookingHubPaginationLinks {
-    prev: String
-    next: String
+    prev: String @encrypted
+    next: String @encrypted
   }
 
   type FlightOffers {
@@ -25,6 +24,7 @@ const typeDefs = gql`
   }
 
   input FlightOfferFilterInput {
+    key: String @encrypted
     departureQuery: String
     destinationLocationQuery: [String!] = []
     departureDateFrom: String!
@@ -76,8 +76,8 @@ const resolvers = {
     pagination: (res) => valueIn(res, '_links', {}),
   },
   BookingHubPaginationLinks: {
-    prev: (links, _, context) => encode(valueIn(links, 'previous.href'), context),
-    next: (links, _, context) => encode(valueIn(links, 'next.href'), context),
+    prev: (links) => valueIn(links, 'previous.href'),
+    next: (links) => valueIn(links, 'next.href'),
   },
   FlightOffer: {
     out: (flightOffer) => valueIn(flightOffer, '_embedded.out.0'),
