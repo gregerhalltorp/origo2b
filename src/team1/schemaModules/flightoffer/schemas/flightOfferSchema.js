@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server';
 import { valueIn } from '@tcne/react-utils/common';
 import { flightOffersResolver } from '../resolvers/flightOffersResolver';
+import { encode } from '../../../../common/utils/crypto';
 
 const typeDefs = gql`
 
@@ -11,11 +12,12 @@ const typeDefs = gql`
   enum BH2_TRIP_TYPES {
     PACKAGE
     FLIGHTONLY
+    COMBINATION
   }
 
   type BookingHubPaginationLinks {
-    prev: String @encrypted
-    next: String @encrypted
+    prev: String
+    next: String
   }
 
   type FlightOffers {
@@ -24,7 +26,7 @@ const typeDefs = gql`
   }
 
   input FlightOfferFilterInput {
-    key: String @encrypted
+    key: String
     departureQuery: String
     destinationLocationQuery: [String!] = []
     departureDateFrom: String!
@@ -51,7 +53,7 @@ const typeDefs = gql`
     code: String
     name: String
     departureDate: Date
-    arivalDate: Date
+    arrivalDate: Date
     flightTime: Duration
   }
 
@@ -76,8 +78,8 @@ const resolvers = {
     pagination: (res) => valueIn(res, '_links', {}),
   },
   BookingHubPaginationLinks: {
-    prev: (links) => valueIn(links, 'previous.href'),
-    next: (links) => valueIn(links, 'next.href'),
+    prev: (links, _, context) => encode(valueIn(links, 'previous.href'), context),
+    next: (links, _, context) => encode(valueIn(links, 'next.href'), context),
   },
   FlightOffer: {
     out: (flightOffer) => valueIn(flightOffer, '_embedded.out.0'),
@@ -93,7 +95,7 @@ const resolvers = {
     code: ({ providerKeys }) => valueIn(providerKeys, 'DepartureCode'),
     name: ({ departureName }) => departureName,
     departureDate: ({ departureDateTimeLocal }) => departureDateTimeLocal,
-    arivalDate: ({ arrivalDateTimeLocal }) => arrivalDateTimeLocal,
+    arrivalDate: ({ arrivalDateTimeLocal }) => arrivalDateTimeLocal,
   },
   FlightDepartureMeta: {
     code: ({ DepartureCode }) => DepartureCode,

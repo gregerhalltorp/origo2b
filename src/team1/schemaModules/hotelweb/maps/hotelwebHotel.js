@@ -4,13 +4,13 @@ function sleep(ms) {
   });
 }
 
-const hotelwebHotelMap = async (hotel = {}) => {
-  await sleep(3000);
+const hotelwebHotelMap = async (hotel = {}) => 
+  //await sleep(3000);
 
-  return {
+   ({
     wvId: hotel.wvId,
     name: hotel.name,
-  };
-};
+  })
+;
 
 export default hotelwebHotelMap;
