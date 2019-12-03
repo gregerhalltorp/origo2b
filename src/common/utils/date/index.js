@@ -211,3 +211,25 @@ export const getDaysShortForSiteId = siteId => {
   const sundayFirst = moment.weekdaysShort();
   return [...sundayFirst.splice(1), sundayFirst[0]];
 };
+
+export function validateAndFormatDate(value, marketUnit, format) {
+  const siteInfo = siteInfos[marketUnit.code];
+
+  if (!siteInfo) {
+    throw new Error('Invalid siteId');
+  }
+
+  moment.locale(siteInfo.locale);
+  const date = moment(value);
+
+  if (!date.isValid()) {
+    throw new Error('Invalid date');
+  }
+  date.locale(siteInfo.locale);
+
+  if (format.substr(0, 1) === '@') {
+    return date.format(siteInfo[format.substr(1)]);
+  }
+
+  return date.format(format);
+}

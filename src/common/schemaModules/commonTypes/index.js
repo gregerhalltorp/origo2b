@@ -1,3 +1,4 @@
 import date from './date';
+import duration from './duration';
 
-export default [...date];
+export default [...date, ...duration];

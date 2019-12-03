@@ -1,6 +1,9 @@
 import { RESTDataSource } from 'apollo-datasource-rest';
 import { valueIn } from '@tcne/react-utils/common';
 import uriTemplates from 'uri-templates';
+import { moment } from '../utils/date';
+
+const formatDateForBH2 = (value) => moment(value, ['YYYYMMDD', 'D.M.YYYY', 'D-M-YYYY', 'YYYY-M-D']).format('YYYY-MM-DD');
 
 // TODO: Move link stuff to reducers?
 class BH2DataSource extends RESTDataSource {
@@ -10,7 +13,7 @@ class BH2DataSource extends RESTDataSource {
   }
 
   willSendRequest(request) {
-    console.log('metaData', this.context.bookingMeta);
+    // console.log('metaData', this.context.bookingMeta);
     const modelVersion = valueIn(this.context, ['bookingMeta', 'modelVersion']);
     if (modelVersion) {
       request.headers.append('modelVersion', modelVersion);
@@ -20,7 +23,7 @@ class BH2DataSource extends RESTDataSource {
   cacheKeyFor(request) {
     const modelVersion = valueIn(this.context, ['bookingMeta', 'modelVersion']);
     const cacheKey = `${request.url}|${modelVersion || ''}`;
-    console.log('cacheKey', cacheKey);
+    // console.log('cacheKey', cacheKey);
     return cacheKey;
   }
 
@@ -31,7 +34,7 @@ class BH2DataSource extends RESTDataSource {
     const bResult = await this.get(bLink);
     const sbLink = valueIn(bResult, ['_links', 'single-booking', 'href']);
     const bookingLink = uriTemplates(sbLink).fill({ BookingId: id });
-    console.log('bookingLink', bookingLink);
+    // console.log('bookingLink', bookingLink);
     const result = await this.get(bookingLink);
     if (result.modelVersion) {
       this.context.bookingMeta = this.context.bookingMeta || {};
@@ -74,8 +77,44 @@ class BH2DataSource extends RESTDataSource {
   }
 
   async getLink(link) {
-    const result = await this.get(link);
+    const result = await this.get(link, null, {
+      headers: {
+        'Auth-UserId': this.context.vitsUser,
+      },
+    });
     return result;
+  }
+
+  async getFlightOffersByKey(key) {
+    const result = await this.getLink(key);
+
+    return this.getLink(valueIn(result, '_links.results.href'));
+  }
+
+  async getFlightOffers(input) {
+    const baseUrlResult = await this.get('');
+    const queryUrl = valueIn(baseUrlResult, ['_links', 'query', 'href']);
+    const qResult = await this.get(queryUrl);
+    const templatedFlightOfferUrl = valueIn(qResult, ['_links', 'flight-offers', 'href']);
+    const flightOfferUrl = uriTemplates(templatedFlightOfferUrl).fill({
+      DepartureQuery: input.departureQuery,
+      DestinationLocationQuery: input.destinationLocationQuery
+        .filter((x) => x)
+        .join(','),
+      DepartureDateFrom: formatDateForBH2(input.departureDateFrom),
+      NumberOfAdults: input.ages.length,
+      NumberOfChildren: 0, // TODO
+      TripTypes: input.tripTypes,
+      ChildAges: '', // TODO
+      DurationGroup: input.duration,
+      MarketUnitKey: this.context.marketUnit.text,
+      NumberOfFlightOffers: input.nrOfFlightOffers,
+      SearchAlternativeDurations: true,
+    });
+    const flightOffers = await this.get(flightOfferUrl);
+    const templatedFlightOfferResultUrl = valueIn(flightOffers, ['_links', 'results', 'href']);
+
+    return this.getLink(templatedFlightOfferResultUrl);
   }
 }
 

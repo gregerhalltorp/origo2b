@@ -4,6 +4,7 @@ import { ApolloGateway } from '@apollo/gateway';
 
 const gateway = new ApolloGateway({
   serviceList: [
+    { name: 'team1', url: 'http://localhost:4003' }, // Todo: skapa config för urlar i olika miljöer?
     { name: 'team3', url: 'http://localhost:4001' },
     { name: 'teamCRM', url: 'http://localhost:4002' },
   ],

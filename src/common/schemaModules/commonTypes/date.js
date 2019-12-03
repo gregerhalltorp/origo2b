@@ -1,4 +1,5 @@
 import { gql } from 'apollo-server';
+import { validateAndFormatDate } from '../../utils/date';
 
 const typeDefs = gql`
   # Date according to general requirements
@@ -33,4 +34,21 @@ const typeDefs = gql`
   }
 `;
 
-export default [{ typeDefs }];
+export default [{
+  typeDefs,
+  resolvers: {
+    Date: {
+      long: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, '@longFormat'),
+      longNoDay: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, '@longNoDayFormat'),
+      short: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, '@shortFormat'),
+      day: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, '@dayFormat'),
+      dayShortName: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, 'ddd'),
+      monthShortName: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, '@monthShortNameFormat'),
+      year: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, 'Y'),
+      month: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, 'M'),
+      time: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, '@timeFormat'),
+      url: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, 'YYYYMMDD'),
+      raw: (value, _, { marketUnit }) => validateAndFormatDate(value, marketUnit, 'YYYY-MM-DDTHH:mm:ss'),
+    },
+  },
+}];
