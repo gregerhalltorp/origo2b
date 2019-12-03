@@ -1,0 +1,21 @@
+{
+  "name": "@tcne/origo-server",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.js",
+    "watch": "rollup -c ../../rollup.config.js -w"
+  },
+  "dependencies": {
+    "@apollo/federation": "^0.11.2",
+    "@tcne/origo-utils": "1.0.0",
+    "@tcne/react-utils": "^4.3.0",
+    "apollo-datasource-rest": "^0.6.9",
+    "apollo-server": "^2.9.12",
+    "bufferutil": "^4.0.1",
+    "graphql": "^14.5.8",
+    "uri-templates": "^0.2.0",
+    "utf-8-validate": "^5.0.2"
+  }
+}

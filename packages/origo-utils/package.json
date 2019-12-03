@@ -1,0 +1,15 @@
+{
+  "name": "@tcne/origo-utils",
+  "version": "1.0.0",
+  "main": "dist",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.package.js",
+    "watch": "rollup -c ../../rollup.config.package.js -w",
+    "symlink": "node symlink"
+  },
+  "dependencies": {
+    "@tcne/react-utils": "^4.3.0",
+    "moment": "^2.24.0"
+  }
+}

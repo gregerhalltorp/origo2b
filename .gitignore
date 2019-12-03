@@ -1,2 +1,7 @@
 node_modules
-.vscode
+packages/*/node_modules
+packages/*/dist
+packages/origo-utils/context
+packages/origo-utils/date
+packages/origo-utils/duration
+packages/origo-utils/crypto
