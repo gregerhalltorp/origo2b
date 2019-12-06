@@ -2,16 +2,16 @@ extends:
   - airbnb-base
   - prettier
 globals:
-  expect: true
+  beforeEach: true
   describe: true
+  expect: true
   it: true
   jest: true
-  beforeEach: true
 rules:
+  import/prefer-default-export: off
   no-plusplus: off
   no-underscore-dangle:
     - error
     - allow:
         - __resolveReference
         - _embedded
-  import/prefer-default-export: off

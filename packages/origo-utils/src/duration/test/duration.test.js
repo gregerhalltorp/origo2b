@@ -1,53 +1,53 @@
-import parseDuration from '..';
+// import parseDuration from '..';
+import { durationHelper, texts } from '..';
 
-describe('Duration', () => {
-  it('formats swedish duration', () => {
-    expect(parseDuration('06:10:00', 1)).to.eql({
-      raw: '06:10:00',
-      hours: 6,
-      minutes: 10,
-      seconds: 0,
-      display: '6 tim 10 min',
+describe('duration', () => {
+  describe('durationHelper', () => {
+    const helperFunction = siteId => {
+      expect(durationHelper('06:10:00', siteId)).toStrictEqual({
+        raw: '06:10:00',
+        hours: 6,
+        minutes: 10,
+        seconds: 0,
+        display: `6 ${texts[siteId].hour} 10 ${texts[siteId].minute}`,
+      });
+    };
+
+    it('throws on wrong input string format', () => {
+      expect(() => {
+        durationHelper('some string');
+      }).toThrow(/wrong format/);
     });
-  });
 
-  it('formats norwegian duration', () => {
-    expect(parseDuration('06:10:00', 3)).to.eql({
-      raw: '06:10:00',
-      hours: 6,
-      minutes: 10,
-      seconds: 0,
-      display: '6 t 10 min',
+    it('throws on siteId left out', () => {
+      expect(() => {
+        durationHelper('01:04:00');
+      }).toThrow(/Invalid siteId/);
     });
-  });
 
-  it('formats danish duration', () => {
-    expect(parseDuration('06:10:00', 11)).to.eql({
-      raw: '06:10:00',
-      hours: 6,
-      minutes: 10,
-      seconds: 0,
-      display: '6 t. 10 min',
+    it('throws on wrong siteId', () => {
+      expect(() => {
+        durationHelper('01:04:00', 23);
+      }).toThrow(/Invalid siteId/);
     });
-  });
 
-  it('formats finish duration', () => {
-    expect(parseDuration('06:10:00', 15)).to.eql({
-      raw: '06:10:00',
-      hours: 6,
-      minutes: 10,
-      seconds: 0,
-      display: '6 h 10 min',
+    it('formats swedish duration', () => {
+      [1, 18].forEach(siteId => {
+        helperFunction(siteId);
+      });
+      // helperFunction(1);
     });
-  });
 
-  it('throws on bad format', () => {
-    expect(() => parseDuration('06a:10:00', 15)).to.throw('Bad formated string 06a:10:00');
-  });
+    it('formats norwegian duration', () => {
+      helperFunction(3);
+    });
 
-  it('throws on wrong siteId', () => {
-    [2, '2', 'asd', true, false, [], {}].forEach((siteId) => {
-      expect(() => parseDuration('06:10:00', siteId)).to.throw('Invalid siteId');
+    it('formats danish duration', () => {
+      helperFunction(11);
+    });
+
+    it('formats finish duration', () => {
+      helperFunction(15);
     });
   });
 });

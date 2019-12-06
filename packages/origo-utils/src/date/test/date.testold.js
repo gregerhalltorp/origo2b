@@ -1,6 +1,6 @@
 import formatDate from '..';
 
-describe('Date', () => {
+xdescribe('Date', () => {
   it('formats swedish date', () => {
     expect(formatDate('2017-09-11', 1)).to.eql({
       long: 'mån 11 sep 2017',

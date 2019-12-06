@@ -1,6 +1,9 @@
 node_modules
+lerna-debug.log
+
 packages/*/node_modules
 packages/*/dist
+packages/*/lerna-debug.log
 packages/origo-utils/context
 packages/origo-utils/date
 packages/origo-utils/duration

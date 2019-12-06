@@ -1,4 +1,4 @@
-const texts = {
+export const texts = {
   1: {
     hour: 'tim',
     minute: 'min',
@@ -50,7 +50,7 @@ export const durationHelper = (stringInput, siteId) => {
 
   const text = texts[siteId];
   if (!/\d\d:\d\d:\d\d/g.test(stringInput)) {
-    throw new Error(`Bad formated string ${stringInput}`);
+    throw new Error(`Input string in wrong format ${stringInput}, should be hh:mm:ss`);
   }
   if (!text) {
     throw new Error('Invalid siteId');
