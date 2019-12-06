@@ -15,9 +15,9 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 - task: YarnInstaller@2
-  displayName: 'Use Yarn 1.5.1'
+  displayName: 'Use Yarn 1.21.1'
   inputs:
-    versionSpec: 1.5.1
+    versionSpec: 1.21.1
 
 - script: |
     make yarn-install
