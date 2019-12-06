@@ -35,7 +35,7 @@ yarn-install: clean-all
 bootstrap: yarn-install
 	yarn lerna bootstrap
 
-test:
+test: yarn-install
 	yarn lerna run --stream test
 
 define clean-source-node_modules
