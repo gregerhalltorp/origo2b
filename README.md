@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/tcitnordic/BIT/_apis/build/status/Web%20Team%203/WebTeam3_origo2%20-%20CI?branchName=master)](https://dev.azure.com/tcitnordic/BIT/_build/latest?definitionId=609&branchName=master)
+
 # New version of origo2 this file for documentation
 
 You will need 
