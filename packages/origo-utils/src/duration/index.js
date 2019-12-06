@@ -21,30 +21,6 @@ export const texts = {
   },
 };
 
-export const getDurationFromMinutes = (minutesIn, siteId) => {
-  if (!minutesIn || +minutesIn !== +minutesIn) {
-    throw new Error(
-      `Provided timespan in wrong format: "${minutesIn}". Should be a number`
-    );
-  }
-
-  const text = texts[siteId];
-  if (!text) {
-    throw new Error('Invalid siteId');
-  }
-  const hours = Math.floor(minutesIn / 60);
-  const minutes = minutesIn % 60;
-  let hoursString = hours.toString();
-  if (hoursString.length === 1) {
-    hoursString = `0${hoursString}`;
-  }
-  let minutesString = minutes.toString();
-  if (minutesString.length === 1) {
-    minutesString = `0${minutesString}`;
-  }
-  return durationHelper(`${hoursString}:${minutesString}:00`, siteId);
-};
-
 export const durationHelper = (stringInput, siteId) => {
   if (!stringInput) return { display: '' };
 
@@ -67,4 +43,28 @@ export const durationHelper = (stringInput, siteId) => {
     seconds,
     display: `${hours} ${text.hour} ${minutes} ${text.minute}`,
   };
+};
+
+export const getDurationFromMinutes = (minutesIn, siteId) => {
+  if (!minutesIn || +minutesIn !== +minutesIn) {
+    throw new Error(
+      `Provided timespan in wrong format: "${minutesIn}". Should be a number`
+    );
+  }
+
+  const text = texts[siteId];
+  if (!text) {
+    throw new Error('Invalid siteId');
+  }
+  const hours = Math.floor(minutesIn / 60);
+  const minutes = minutesIn % 60;
+  let hoursString = hours.toString();
+  if (hoursString.length === 1) {
+    hoursString = `0${hoursString}`;
+  }
+  let minutesString = minutes.toString();
+  if (minutesString.length === 1) {
+    minutesString = `0${minutesString}`;
+  }
+  return durationHelper(`${hoursString}:${minutesString}:00`, siteId);
 };

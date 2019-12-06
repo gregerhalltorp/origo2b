@@ -8,15 +8,17 @@ const charterflowInstance = crypto({
 });
 
 function encodeString(unencryptedText, instance) {
-  return Buffer.from(instance.encode(unencryptedText), 'utf8').toString('base64');
+  return Buffer.from(instance.encode(unencryptedText), 'utf8').toString(
+    'base64'
+  );
 }
 
 function decodeString(encryptedText, instance) {
   return instance.decode(Buffer.from(encryptedText, 'base64').toString('utf8'));
 }
 
-
 function getInstance(app) {
+  // eslint-disable-next-line default-case
   switch (app) {
     case 'charterflow':
       return charterflowInstance;
