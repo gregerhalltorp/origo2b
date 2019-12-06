@@ -22,6 +22,12 @@ export const texts = {
 };
 
 export const getDurationFromMinutes = (minutesIn, siteId) => {
+  if (!minutesIn || +minutesIn !== +minutesIn) {
+    throw new Error(
+      `Provided timespan in wrong format: "${minutesIn}". Should be a number`
+    );
+  }
+
   const text = texts[siteId];
   if (!text) {
     throw new Error('Invalid siteId');
@@ -36,13 +42,7 @@ export const getDurationFromMinutes = (minutesIn, siteId) => {
   if (minutesString.length === 1) {
     minutesString = `0${minutesString}`;
   }
-  return {
-    raw: `${hoursString}:${minutesString}:00`,
-    hours,
-    minutes,
-    seconds: 0,
-    display: `${hours} ${text.hour} ${minutes} ${text.minute}`,
-  };
+  return durationHelper(`${hoursString}:${minutesString}:00`, siteId);
 };
 
 export const durationHelper = (stringInput, siteId) => {
@@ -50,12 +50,16 @@ export const durationHelper = (stringInput, siteId) => {
 
   const text = texts[siteId];
   if (!/\d\d:\d\d:\d\d/g.test(stringInput)) {
-    throw new Error(`Input string in wrong format ${stringInput}, should be hh:mm:ss`);
+    throw new Error(
+      `Input string in wrong format: "${stringInput}". Should be hh:mm:ss`
+    );
   }
   if (!text) {
     throw new Error('Invalid siteId');
   }
-  const [hours, minutes, seconds] = stringInput.split(':').map(x => parseInt(x, 10));
+  const [hours, minutes, seconds] = stringInput
+    .split(':')
+    .map(x => parseInt(x, 10));
   return {
     raw: stringInput,
     hours,

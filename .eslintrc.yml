@@ -10,6 +10,7 @@ globals:
 rules:
   import/prefer-default-export: off
   no-plusplus: off
+  no-self-compare: off
   no-underscore-dangle:
     - error
     - allow:
