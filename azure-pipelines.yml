@@ -3,19 +3,22 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-#trigger:
-#- master
+trigger:
+- master
 
-#pool:
-#  vmImage: 'ubuntu-latest'
+pool:
+  vmImage: 'ubuntu-latest'
 
-#steps:
-#- task: NodeTool@0
-#  inputs:
-#    versionSpec: '10.x'
-#  displayName: 'Install Node.js'
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+- task: YarnInstaller@2
+  displayName: 'Use Yarn 1.5.1'
+  inputs:
+    versionSpec: 1.5.1
 
-#- script: |
-#    npm install
-#    npm run build
-#  displayName: 'npm install and build'
+- script: |
+    make yarn-install
+  displayName: 'npm install and build'
