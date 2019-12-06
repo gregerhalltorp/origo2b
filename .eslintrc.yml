@@ -1,25 +1,18 @@
 extends:
-  - airbnb
-env:
-  browser: true
-  es6: true
-  node: true
-  mocha: true
+  - airbnb-base
+  - prettier
 globals:
-  Atomics: readonly
-  SharedArrayBuffer: readonly
+  beforeEach: true
+  describe: true
   expect: true
-parserOptions:
-  ecmaFeatures:
-    jsx: true
-  ecmaVersion: 2018
-  sourceType: module
-plugins:
-  - react
+  it: true
+  jest: true
 rules:
+  import/prefer-default-export: off
   no-plusplus: off
+  no-self-compare: off
   no-underscore-dangle:
     - error
     - allow:
         - __resolveReference
-  import/prefer-default-export: off
+        - _embedded

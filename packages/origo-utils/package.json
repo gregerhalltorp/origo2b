@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "main": "dist",
   "license": "MIT",
+  "jest": {
+    "transform": {"\\.js$": ["babel-jest", {"rootMode": "upward"}]}
+  },
   "scripts": {
     "build": "rollup -c ../../rollup.config.package.js",
     "watch": "rollup -c ../../rollup.config.package.js -w",
-    "symlink": "node symlink"
+    "symlink": "node symlink",
+    "test": "jest"
   },
   "dependencies": {
     "@tcne/react-utils": "^4.3.0",
