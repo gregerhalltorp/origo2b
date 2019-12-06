@@ -20,5 +20,5 @@ steps:
     versionSpec: 1.19.2
 
 - script: |
-    make yarn-install
-  displayName: 'npm install and build'
+    make test
+  displayName: 'yarn install and run tests'
