@@ -13,7 +13,9 @@
       ]
     },
     "collectCoverageFrom": [
-      "./src/**/*.js"
+      "./src/**/*.js",
+      "!./src/date/siteInfos.js",
+      "!./src/date/textsPerSiteId.js"
     ],
     "coverageThreshold": {
       "global": {

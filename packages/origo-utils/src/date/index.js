@@ -5,36 +5,37 @@ import textsPerSiteId from './textsPerSiteId';
 
 export { moment, siteInfos };
 
-export default (dateInput, siteId, format) => {
-  if (!dateInput) {
-    return {};
-  }
+// This function deprecated - use validateAndFormatDate instead
+// export default (dateInput, siteId, format) => {
+//   if (!dateInput) {
+//     return {};
+//   }
 
-  const siteInfo = siteInfos[siteId];
-  moment.locale(siteInfo.locale);
-  const date = moment(dateInput, format);
-  if (!date.isValid) {
-    throw new Error('Invalid date');
-  }
-  if (!siteInfo) {
-    throw new Error('Invalid siteId');
-  }
-  date.locale(siteInfo.locale);
-  return {
-    long: date.format(siteInfo.longFormat),
-    longNoDay: date.format(siteInfo.longNoDayFormat),
-    short: date.format(siteInfo.shortFormat),
-    day: date.format(siteInfo.dayFormat),
-    dayShortName: date.format('ddd'),
-    monthShortName: date.format(siteInfo.monthShortNameFormat),
-    year: date.format('Y'),
-    month: date.format('M'),
-    time: date.format(siteInfo.timeFormat),
-    url: date.format('YYYYMMDD'),
-    raw: date.format('YYYY-MM-DDTHH:mm:ss'),
-    dayMonthYearFormat: date.format(siteInfo.dayMonthYearFormat),
-  };
-};
+//   const siteInfo = siteInfos[siteId];
+//   moment.locale(siteInfo.locale);
+//   const date = moment(dateInput, format);
+//   if (!date.isValid) {
+//     throw new Error('Invalid date');
+//   }
+//   if (!siteInfo) {
+//     throw new Error('Invalid siteId');
+//   }
+//   date.locale(siteInfo.locale);
+//   return {
+//     long: date.format(siteInfo.longFormat),
+//     longNoDay: date.format(siteInfo.longNoDayFormat),
+//     short: date.format(siteInfo.shortFormat),
+//     day: date.format(siteInfo.dayFormat),
+//     dayShortName: date.format('ddd'),
+//     monthShortName: date.format(siteInfo.monthShortNameFormat),
+//     year: date.format('Y'),
+//     month: date.format('M'),
+//     time: date.format(siteInfo.timeFormat),
+//     url: date.format('YYYYMMDD'),
+//     raw: date.format('YYYY-MM-DDTHH:mm:ss'),
+//     dayMonthYearFormat: date.format(siteInfo.dayMonthYearFormat),
+//   };
+// };
 
 export const getDurationInWeekFromDays = (duration, siteId = 1) => {
   const texts = textsPerSiteId[siteId];
@@ -101,7 +102,7 @@ export const getDuration = (
   const fromDate = moment(fromDateString, format);
   const toDate = moment(toDateString, format);
   const duration = moment.duration(toDate.diff(fromDate));
-  return getDurationFromMinutes(duration.asMinutes(), siteId);
+  return getDurationFromMinutes(Math.round(duration.asMinutes()), siteId);
 };
 
 export const getMonthNamesForSiteId = siteId => {
@@ -119,8 +120,9 @@ export const getDaysShortForSiteId = siteId => {
     return null;
   }
   moment.locale(siteInfo.locale);
-  const sundayFirst = moment.weekdaysShort();
-  return [...sundayFirst.splice(1), sundayFirst[0]];
+  // From momentjs.com: As of 2.13.0 you can pass a bool as the first parameter of the weekday functions.
+  // If true, the weekdays will be returned in locale specific order.
+  return moment.weekdaysShort(true);
 };
 
 export function validateAndFormatDate(value, marketUnit, format) {
