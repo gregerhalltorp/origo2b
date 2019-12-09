@@ -1,4 +1,3 @@
-console.log('this runs', process.env.NODE_ENV);
 module.exports = {
   presets: [
     [

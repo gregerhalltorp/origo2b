@@ -12,62 +12,49 @@ describe('duration', () => {
         display: `${hours} ${texts[siteId].hour} ${minutes} ${texts[siteId].minute}`,
       });
     };
-    it('throws on wrong input string format', () => {
+
+    test('throws on wrong input string format', () => {
       expect(() => {
         durationHelper('some string');
       }).toThrow(/wrong format/);
     });
 
-    it('throws on siteId left out', () => {
+    test('throws on siteId left out', () => {
       expect(() => {
         durationHelper('01:04:00');
       }).toThrow(/Invalid siteId/);
     });
 
-    it('throws on wrong siteId', () => {
+    test('throws on wrong siteId', () => {
       expect(() => {
         durationHelper('01:04:00', 23);
       }).toThrow(/Invalid siteId/);
     });
 
-    it('formats swedish duration', () => {
+    test('handles empty stringInput', () => {
+      expect(durationHelper('', 1)).toStrictEqual({ display: '' });
+    });
+
+    test('formats swedish duration', () => {
       [1, 18].forEach(siteId => {
         helperFunction(siteId, '06:10:00', 6, 10, 0);
       });
     });
 
-    it('formats norwegian duration', () => {
+    test('formats norwegian duration', () => {
       helperFunction(3, '06:10:00', 6, 10, 0);
     });
 
-    it('formats danish duration', () => {
+    test('formats danish duration', () => {
       helperFunction(11, '06:10:00', 6, 10, 0);
     });
 
-    it('formats finish duration', () => {
+    test('formats finish duration', () => {
       helperFunction(15, '06:10:00', 6, 10, 0);
     });
   });
 
   describe('getDurationFromMinutes', () => {
-    it('throws when minutesIn is not a number', () => {
-      expect(() => {
-        getDurationFromMinutes('alsdfkj', 1);
-      }).toThrow(/wrong format/);
-    });
-
-    it('throws on siteId left out', () => {
-      expect(() => {
-        getDurationFromMinutes('44');
-      }).toThrow(/Invalid siteId/);
-    });
-
-    it('throws on wrong siteId', () => {
-      expect(() => {
-        getDurationFromMinutes('44', 23);
-      }).toThrow(/Invalid siteId/);
-    });
-
     const helperFunction = (
       minutesIn,
       siteId,
@@ -85,57 +72,75 @@ describe('duration', () => {
       });
     };
 
-    it('returns correct for sub-hour span, Sweden', () => {
+    test('throws when minutesIn is not a number', () => {
+      expect(() => {
+        getDurationFromMinutes('alsdfkj', 1);
+      }).toThrow(/wrong format/);
+    });
+
+    test('throws on siteId left out', () => {
+      expect(() => {
+        getDurationFromMinutes('44');
+      }).toThrow(/Invalid siteId/);
+    });
+
+    test('throws on wrong siteId', () => {
+      expect(() => {
+        getDurationFromMinutes('44', 23);
+      }).toThrow(/Invalid siteId/);
+    });
+
+    test('returns correct for sub-hour span, Sweden', () => {
       [1, 18].forEach(siteId => {
         helperFunction(44, siteId, '00:44:00', 0, 44, 0);
       });
     });
 
-    it('returns correct for sub-hour span, Norway', () => {
+    test('returns correct for sub-hour span, Norway', () => {
       helperFunction(44, 3, '00:44:00', 0, 44, 0);
     });
 
-    it('returns correct for sub-hour span, Denmark', () => {
+    test('returns correct for sub-hour span, Denmark', () => {
       helperFunction(44, 11, '00:44:00', 0, 44, 0);
     });
 
-    it('returns correct for sub-hour span, Finland', () => {
+    test('returns correct for sub-hour span, Finland', () => {
       helperFunction(44, 15, '00:44:00', 0, 44, 0);
     });
 
-    it('returns correct for medium span, Sweden', () => {
+    test('returns correct for medium span, Sweden', () => {
       [1, 18].forEach(siteId => {
-        helperFunction(354, siteId, '05:54:00', 5, 54, 0);
+        helperFunction(307, siteId, '05:07:00', 5, 7, 0);
       });
     });
 
-    it('returns correct for medium span, Norway', () => {
-      helperFunction(354, 3, '05:54:00', 5, 54, 0);
+    test('returns correct for medium span, Norway', () => {
+      helperFunction(307, 3, '05:07:00', 5, 7, 0);
     });
 
-    it('returns correct for medium span, Denmark', () => {
-      helperFunction(354, 11, '05:54:00', 5, 54, 0);
+    test('returns correct for medium span, Denmark', () => {
+      helperFunction(307, 11, '05:07:00', 5, 7, 0);
     });
 
-    it('returns correct for medium span, Finland', () => {
-      helperFunction(354, 15, '05:54:00', 5, 54, 0);
+    test('returns correct for medium span, Finland', () => {
+      helperFunction(307, 15, '05:07:00', 5, 7, 0);
     });
 
-    it('returns correct for long span, Sweden', () => {
+    test('returns correct for long span, Sweden', () => {
       [1, 18].forEach(siteId => {
         helperFunction(2547, siteId, '42:27:00', 42, 27, 0);
       });
     });
 
-    it('returns correct for long span, Norway', () => {
+    test('returns correct for long span, Norway', () => {
       helperFunction(2547, 3, '42:27:00', 42, 27, 0);
     });
 
-    it('returns correct for long span, Denmark', () => {
+    test('returns correct for long span, Denmark', () => {
       helperFunction(2547, 11, '42:27:00', 42, 27, 0);
     });
 
-    it('returns correct for long span, Finland', () => {
+    test('returns correct for long span, Finland', () => {
       helperFunction(2547, 15, '42:27:00', 42, 27, 0);
     });
   });

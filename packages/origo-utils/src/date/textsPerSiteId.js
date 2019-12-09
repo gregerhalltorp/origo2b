@@ -1,0 +1,42 @@
+export default {
+  1: {
+    day: 'dag',
+    days: 'dagar',
+    week: 'vecka',
+    weeks: 'veckor',
+    night: 'natt',
+    nights: 'nätter',
+  },
+  3: {
+    day: 'dag',
+    days: 'dager',
+    week: 'uke',
+    weeks: 'uker',
+    night: 'natt',
+    nights: 'netter',
+  },
+  11: {
+    day: 'dag',
+    days: 'dage',
+    week: 'uge',
+    weeks: 'uger',
+    night: 'nat',
+    nights: 'nætter',
+  },
+  15: {
+    day: 'päivä',
+    days: 'päivää',
+    week: 'viikko',
+    weeks: 'viikkoa',
+    night: 'yö',
+    nights: 'yötä',
+  },
+  18: {
+    day: 'dag',
+    days: 'dagar',
+    week: 'vecka',
+    weeks: 'veckor',
+    night: 'natt',
+    nights: 'nätter',
+  },
+};

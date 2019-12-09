@@ -1,9 +1,6 @@
 import { gql } from 'apollo-server';
 import { validateAndFormatDate } from '@tcne/origo-utils/date';
 
-// import { gql } from 'apollo-server';
-// import { validateAndFormatDate } from 'utils';
-
 const typeDefs = gql`
   # Date according to general requirements
   type Date {

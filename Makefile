@@ -1,6 +1,6 @@
 SOURCES = packages
 
-.PHONY: boostrap build-all-only build-all-dev clean-all clean-dist run-all-dev test watch-all yarn-install
+.PHONY: boostrap build-all-only build-all-dev clean-all clean-dist run-all-dev test test-only watch-all yarn-install
 
 build-all-only: clean-dist
 	yarn lerna run build
@@ -35,7 +35,10 @@ yarn-install: clean-all
 bootstrap: yarn-install
 	yarn lerna bootstrap
 
-test: yarn-install
+test: bootstrap
+	yarn lerna run --stream test
+
+test-only:
 	yarn lerna run --stream test
 
 define clean-source-node_modules
