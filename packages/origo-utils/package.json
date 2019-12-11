@@ -4,13 +4,40 @@
   "main": "dist",
   "license": "MIT",
   "jest": {
-    "transform": {"\\.js$": ["babel-jest", {"rootMode": "upward"}]}
+    "transform": {
+      "\\.js$": [
+        "babel-jest",
+        {
+          "rootMode": "upward"
+        }
+      ]
+    },
+    "collectCoverageFrom": [
+      "./src/**/*.js",
+      "!./src/date/siteInfos.js",
+      "!./src/date/textsPerSiteId.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": -2
+      },
+      "./src/context/**/*.js": {
+        "branches": 0
+      },
+      "./src/crypto/**/*.js": {
+        "branches": 0
+      }
+    }
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.package.js",
     "watch": "rollup -c ../../rollup.config.package.js -w",
     "symlink": "node symlink",
-    "test": "jest"
+    "test": "jest --coverage",
+    "lint": "eslint src"
   },
   "dependencies": {
     "@tcne/react-utils": "^4.3.0",
