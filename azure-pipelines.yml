@@ -18,6 +18,47 @@ steps:
   displayName: 'Use Yarn 1.19.2'
   inputs:
     versionSpec: 1.19.2
+#Your build pipeline references a secret variable named ‘tcne.npm.secret’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘echo -n "$npm_client_app_id:$npm_client_app_secret" | base64 --wrap=0’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘curl --silent --write-out "HTTPSTATUS:%{http_code}" -X GET https://tcne-npm.azurewebsites.net/.auth/login-client-credentials -H "Authorization: Basic $basic_token"’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘echo $http_response | sed -e 's/HTTPSTATUS\:.*//g'’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘echo $http_response | tr -d '\n' | sed -e 's/.*HTTPSTATUS://'’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+- bash: |
+   npm_client_app_id="b8fd10e5-b567-479f-8f71-fc1ff77ab107"
+   npm_client_app_secret="$(tcne.npm.secret)"
+   
+   [ -z "$npm_client_app_id" ] && echo "Need to set npm_client_app_id" && exit 1;
+   [ -z "$npm_client_app_secret" ] && echo "Need to set npm_client_app_secret" && exit 1;
+   
+   # create basic authentication token
+   basic_token=$(echo -n "$npm_client_app_id:$npm_client_app_secret" | base64 --wrap=0)
+   
+   # store the whole response with the status at the and
+   http_response=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -X GET https://tcne-npm.azurewebsites.net/.auth/login-client-credentials -H "Authorization: Basic $basic_token")
+   
+   # extract the body
+   http_body=$(echo $http_response | sed -e 's/HTTPSTATUS\:.*//g')
+   
+   # extract the status
+   http_status=$(echo $http_response | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
+   
+   if [[ $http_status != 200 ]]; then
+     echo Unable to login! Status code=$http_status
+     echo $http_body
+     exit 1
+   fi
+   
+   npm config set @tcne:registry=https://tcne-npm.azurewebsites.net/> /dev/null
+   npm config set //tcne-npm.azurewebsites.net/:_authToken "$http_body"> /dev/null
+   npm config set //tcne-npm.azurewebsites.net/:always-auth true
+   
+   echo "Npm & Yarn has been configured to fetch packages with
+       scope: @tcne
+        from: https://tcne-npm.azurewebsites.net/"
+   
+   
+  displayName: 'Fetch npm credentials'
 
 - script: |
     make test
