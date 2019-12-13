@@ -61,5 +61,5 @@ steps:
   displayName: 'Fetch npm credentials'
 
 - script: |
-    make test
+    make ci
   displayName: 'yarn install and run tests'
