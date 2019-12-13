@@ -19,15 +19,12 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": -2
+        "branches": 98,
+        "functions": 98,
+        "lines": 98,
+        "statements": -1
       },
       "./src/context/**/*.js": {
-        "branches": 0
-      },
-      "./src/crypto/**/*.js": {
         "branches": 0
       }
     }

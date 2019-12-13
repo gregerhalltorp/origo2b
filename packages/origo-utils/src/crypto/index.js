@@ -4,7 +4,7 @@ const charterflowInstance = crypto({
   key:
     'jdjdjdfy2736sdws45eeså90hfgefsewfd____giff udysgr757fs eydts3jd9201akiSDFDGqr2FWEFWDFWRF',
   seed: 234087527276645,
-  hashOnly: true,
+  hashOnly: false,
 });
 
 function encodeString(unencryptedText, instance) {
@@ -28,12 +28,18 @@ function getInstance(app) {
 }
 
 export function encode(value, context) {
+  if (!value || !context) {
+    throw new Error('Must provide value and context');
+  }
   const instance = getInstance(context.callerApp);
 
   return value && encodeString(value, instance);
 }
 
 export function decode(value, context) {
+  if (!value || !context) {
+    throw new Error('Must provide value and context');
+  }
   const instance = getInstance(context.callerApp);
 
   return value && decodeString(value, instance);
