@@ -1,23 +1,19 @@
 SOURCES = packages
 
-.PHONY: boostrap build-all-only build-all-dev clean-all clean-dist run-all-dev test test-only watch-all yarn-install
+.PHONY: boostrap build-all-dev build-all-only ci clean-all clean-dist lint-only run-all-dev test-only watch-all yarn-install
 
-build-all-only: clean-dist
-	yarn lerna run build
+bootstrap: yarn-install
+	yarn lerna bootstrap
 
 build-all-dev: build-all-only
 	yarn lerna run symlink
 
-watch-all: clean-dist
-	yarn lerna run watch --parallel --ignore origo-booking --ignore origo-search & \
-	yarn lerna run symlink && \
-	yarn lerna run start --stream
-	# yarn lerna run start-booking --stream &&
-	# yarn lerna run start-search --stream &&
-	# yarn lerna run start-gateway --stream &&
+build-all-only: clean-dist
+	yarn lerna run build
 
-run-all-dev: build-all-dev
-	yarn lerna run start --stream
+ci: bootstrap
+	yarn lerna run --stream test
+	yarn lerna run --stream lint
 
 clean-all:
 	rm -rf node_modules
@@ -29,17 +25,25 @@ clean-dist:
 	$(foreach source, $(SOURCES), \
 		$(call clean-source-dist, $(source)))
 
-yarn-install: clean-all
-	yarn
+lint-only:
+	yarn lerna run --stream lint
 
-bootstrap: yarn-install
-	yarn lerna bootstrap
-
-test: bootstrap
-	yarn lerna run --stream test
+run-all-dev: build-all-dev
+	yarn lerna run start --stream
 
 test-only:
 	yarn lerna run --stream test
+
+watch-all: clean-dist
+	yarn lerna run watch --parallel --ignore origo-booking --ignore origo-search & \
+	yarn lerna run symlink && \
+	yarn lerna run start --stream
+	# yarn lerna run start-booking --stream &&
+	# yarn lerna run start-search --stream &&
+	# yarn lerna run start-gateway --stream &&
+
+yarn-install: clean-all
+	yarn
 
 define clean-source-node_modules
 	rm -rf $(1)/*/node_modules	

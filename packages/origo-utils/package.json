@@ -4,6 +4,8 @@
   "main": "dist",
   "license": "MIT",
   "jest": {
+    "displayName": "origo-utils-test",
+    "collectCoverage": true,
     "transform": {
       "\\.js$": [
         "babel-jest",
@@ -15,20 +17,15 @@
     "collectCoverageFrom": [
       "./src/**/*.js",
       "!./src/date/siteInfos.js",
-      "!./src/date/textsPerSiteId.js"
+      "!./src/date/textsPerSiteId.js",
+      "!./src/context/index.js"
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": -2
-      },
-      "./src/context/**/*.js": {
-        "branches": 0
-      },
-      "./src/crypto/**/*.js": {
-        "branches": 0
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
       }
     }
   },
@@ -36,7 +33,7 @@
     "build": "rollup -c ../../rollup.config.package.js",
     "watch": "rollup -c ../../rollup.config.package.js -w",
     "symlink": "node symlink",
-    "test": "jest --coverage",
+    "test": "jest",
     "lint": "eslint src"
   },
   "dependencies": {

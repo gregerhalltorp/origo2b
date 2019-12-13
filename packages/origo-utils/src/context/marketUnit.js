@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-const LOOKUP = {
+export const LOOKUP = {
   VS: { siteId: 1, code: 'VS' },
   1: { siteId: 1, code: 'VS' },
   VN: { siteId: 3, code: 'VN' },
