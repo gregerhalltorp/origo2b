@@ -4,6 +4,7 @@
   "main": "dist",
   "license": "MIT",
   "jest": {
+    "displayName": "origo-utils",
     "transform": {
       "\\.js$": [
         "babel-jest",
@@ -15,17 +16,15 @@
     "collectCoverageFrom": [
       "./src/**/*.js",
       "!./src/date/siteInfos.js",
-      "!./src/date/textsPerSiteId.js"
+      "!./src/date/textsPerSiteId.js",
+      "!./src/context/index.js"
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 98,
-        "functions": 98,
-        "lines": 98,
-        "statements": -1
-      },
-      "./src/context/**/*.js": {
-        "branches": 0
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
       }
     }
   },

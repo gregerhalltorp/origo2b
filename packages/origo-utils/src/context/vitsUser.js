@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-const defaultUserForMucd = {
+export const defaultUserForMucd = {
   1: '2384',
   3: '2588',
   11: '2645',
@@ -8,10 +8,10 @@ const defaultUserForMucd = {
   18: '2188',
 };
 
-export const getVitsUser = (headers, marketUnit) => {
+export const getVitsUser = (headers = {}, { siteId = 1 } = {}) => {
   return (
     headers['auth-userid'] ||
-    defaultUserForMucd[marketUnit.siteId] ||
+    defaultUserForMucd[siteId] ||
     defaultUserForMucd[1]
   );
 };
