@@ -7,7 +7,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "make lint",
+      "pre-commit": "make lint-only",
       "pre-push": "make ci-only"
     }
   },
