@@ -15,6 +15,10 @@ ci: bootstrap
 	yarn lerna run --stream test
 	yarn lerna run --stream lint
 
+ci-only:
+	yarn lerna run --stream test
+	yarn lerna run --stream lint
+
 clean-all:
 	rm -rf node_modules
 	$(foreach source, $(SOURCES), \
