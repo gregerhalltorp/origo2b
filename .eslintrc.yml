@@ -9,6 +9,7 @@ globals:
   jest: true
 rules:
   import/prefer-default-export: off
+  no-bitwise: off
   no-plusplus: off
   no-self-compare: off
   no-underscore-dangle:

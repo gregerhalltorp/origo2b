@@ -7,7 +7,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "make lint-only",
+      "pre-commit": "make lint-only && make generate-schema",
       "pre-push": "make ci-only"
     }
   },
@@ -15,6 +15,7 @@
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/register": "^7.7.4",
+    "@graphql-inspector/cli": "^1.26.0",
     "@rollup/plugin-json": "^4.0.0",
     "core-js": "^3.4.2",
     "dashify": "^2.0.0",

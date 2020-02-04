@@ -1,9 +1,12 @@
 SOURCES = packages
 
-.PHONY: boostrap build-all-dev build-all-only ci clean-all clean-dist lint-only run-all-dev test-only watch-all yarn-install
+.PHONY: boostrap build-all-dev build-all-only build-server ci clean-all clean-dist lint-only run-all-dev test-only watch-all yarn-install generate-schema
 
 bootstrap: yarn-install
-	yarn lerna bootstrap
+	yarn lerna bootstrap --hoist
+
+build-server:
+	yarn lerna run --scope @tcne/origo-server build
 
 build-all-dev: build-all-only
 	yarn lerna run symlink
@@ -47,7 +50,10 @@ watch-all: clean-dist
 	# yarn lerna run start-gateway --stream &&
 
 yarn-install: clean-all
-	yarn
+	npm install
+
+generate-schema:
+	yarn lerna run makeAndDiffSchema
 
 define clean-source-node_modules
 	rm -rf $(1)/*/node_modules	

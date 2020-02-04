@@ -20,6 +20,10 @@ const server = new ApolloServer({
   gateway,
   subscriptions: false,
   tracing: true,
+  context: ({ req }) => {
+    console.log(req.headers);
+    return {};
+  },
 });
 
 server.listen({ port: 4000 }).then(({ url }) => {

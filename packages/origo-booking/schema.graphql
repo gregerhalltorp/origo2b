@@ -1,0 +1,89 @@
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+scalar _Any
+
+union _Entity = Booking
+
+type _Service {
+  """
+  The sdl representing the federated service capabilities. Includes federation
+  directives, removes federation types, and includes rest of full schema after
+  schema directives have been applied
+  """
+  sdl: String
+}
+
+type Booking @key(fields: "id") {
+  id: ID!
+  modelVersion: Int
+  passengers: [Passenger]
+  extraGroups(views: [ID]!, extraGroupKeys: [ID]): [PassengerExtraGroup]
+}
+
+type Date {
+  long: String
+  longNoDay: String
+  short: String
+  day: String
+  dayShortName: String
+  monthShortName: String
+  year: String
+  time: String
+  month: String
+  url: String
+  raw: String
+}
+
+type Duration {
+  hours: Int
+  minutes: Int
+  seconds: Int
+  display: String
+  raw: String
+}
+
+type Passenger {
+  id: ID!
+  firstName: String
+  lastName: String
+  name: String
+  age: PassengerAge
+  number: Int
+  gender: String
+  leadPassenger: Boolean
+}
+
+type PassengerAge {
+  value: Int
+  category: PassengerAgeCategory
+  dateOfBirth: String
+  dateOfBirthLocale: String
+}
+
+enum PassengerAgeCategory {
+  ADULT
+  YOUTH
+  CHILD
+  INFANT
+}
+
+type PassengerExtraGroup {
+  id: ID!
+  groupKey: ID!
+  groupCode: ID!
+  groupName: String!
+}
+
+type Query {
+  _entities(representations: [_Any!]!): [_Entity]!
+  _service: _Service!
+  booking(id: ID!, modelVersion: ID): Booking
+}

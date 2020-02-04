@@ -25,3 +25,23 @@ yarn lerna add @apollo/gateway packages/origo-gateway
 yarn lerna add @apollo/gateway --scope=@tcne/origo-gateway
 yarn lerna add @apollo/gateway --scope={@tcne/origo-booking,@tcne/origo-gateway}
 ```
+
+## Features to add
+* Schema overview
+  - Voyager
+  - Generated schema file
+* Generated schema file, generate on pre-commit
+* Use @deprecated, ensure that breaking changes are notified - use @deprecated, check for deprecate and accept removal of field with @deprecated easier
+* Generate docs with breaking changes
+* Register usage (how much and who)
+* Move to a managed schema instead of the service list - graph manager or homegrown?
+  - reverse engineer a bit
+  - what gets sent on register service?
+  - how does the polling work, what gets sent back
+  - how is this merged?
+  - How does it look in graph manager
+
+## Stuff that needs fixin'
+* Headers pass through OR context
+
+Istället för att bara exportera server: exportera "constructor" och ha två saker i returnerat objekt 

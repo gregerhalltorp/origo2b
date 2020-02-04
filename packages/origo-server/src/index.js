@@ -1,6 +1,12 @@
-import { ApolloServer } from 'apollo-server';
-import { buildFederatedSchema } from '@apollo/federation';
+import { ApolloServer, makeExecutableSchema } from 'apollo-server';
+import {
+  buildFederatedSchema,
+  printSchema as fedPrintSchema,
+} from '@apollo/federation';
 import { getMarketUnit, getVitsUser } from '@tcne/origo-utils/context';
+import fs from 'fs';
+import { printSchema } from 'graphql';
+
 import commonSchemaModules from './schemaModules';
 import commonDataSources from './datasources';
 
@@ -9,8 +15,15 @@ const server = ({
   dataSources = () => ({}),
   port = 4000,
 } = {}) => {
+  const schema = buildFederatedSchema([
+    ...schemaModules,
+    ...commonSchemaModules,
+  ]);
+
+  const anotherSchema = printSchema(schema);
+
   const serverConfig = {
-    schema: buildFederatedSchema([...schemaModules, ...commonSchemaModules]),
+    schema,
     tracing: true,
     reporting: true,
     // formatResponse: response => {
@@ -55,6 +68,7 @@ const server = ({
     //   },
     // ],
     context: ({ req }) => {
+      console.log(req.headers);
       const context = {};
       context.marketUnit = getMarketUnit(
         req.headers['x-origo-mucd'] || req.headers.marketunit
@@ -71,12 +85,26 @@ const server = ({
     };
   };
 
-  const apolloServer = new ApolloServer(serverConfig);
-  apolloServer.listen({ port }).then(({ url }) => {
-    // eslint-disable-next-line no-console
-    console.log(`🚀  Server ready at ${url}`);
-  });
+  const start = () => {
+    const apolloServer = new ApolloServer(serverConfig);
+    apolloServer.listen({ port }).then(({ url }) => {
+      // eslint-disable-next-line no-console
+      console.log(`🚀  Server ready at ${url}`);
+    });
+  };
+
+  const generateSchema = () => {
+    // TODO: merge with anotherSchema to include directives?
+    console.log(anotherSchema);
+    fs.writeFileSync('./new.graphql', fedPrintSchema(schema));
+  }
+
+  return {
+    start,
+    generateSchema,
+  };
 };
 
 export default server;
+export { printSchema } from 'graphql';
 export { gql } from 'apollo-server';

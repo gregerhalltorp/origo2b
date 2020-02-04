@@ -1,9 +1,16 @@
 import server from '@tcne/origo-server';
+import fs from 'fs';
 import schemaModules from './schemaModules';
 import dataSources from './datasources';
 
-server({
+const { start, generateSchema } = server({
   schemaModules,
   dataSources,
   port: 4001,
 });
+
+if (~process.argv.slice(2).indexOf('--start')) {
+  start();
+} else {
+  generateSchema();
+}
