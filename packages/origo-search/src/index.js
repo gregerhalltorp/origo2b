@@ -2,8 +2,14 @@ import server from '@tcne/origo-server';
 import schemaModules from './schemaModules';
 import dataSources from './datasources';
 
-server({
+const { start, generateSchema } = server({
   schemaModules,
   dataSources,
   port: 4002,
 });
+
+if (~process.argv.slice(2).indexOf('--start')) {
+  start();
+} else {
+  generateSchema();
+}

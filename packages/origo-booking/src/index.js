@@ -1,5 +1,4 @@
 import server from '@tcne/origo-server';
-import fs from 'fs';
 import schemaModules from './schemaModules';
 import dataSources from './datasources';
 
