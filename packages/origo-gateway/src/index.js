@@ -7,23 +7,24 @@ import { ApolloGateway } from '@apollo/gateway';
 // Men: då måste det finnas ett sätt att starta om så att ny config laddas in. Värt att undersöka
 // TODO: skapa config för urlar i olika miljöer
 
-const gateway = new ApolloGateway({
-  serviceList: [
-    { name: 'booking', url: 'http://localhost:4001' },
-    { name: 'search', url: 'http://localhost:4002' },
-    // { name: 'payments', url: 'http://localhost:4002' },
-  ],
-  debug: true,
-});
+// const gateway = new ApolloGateway({
+//   serviceList: [
+//     { name: 'booking', url: 'http://localhost:4001' },
+//     { name: 'search', url: 'http://localhost:4002' },
+//     // { name: 'payments', url: 'http://localhost:4002' },
+//   ],
+//   debug: true,
+// });
+const gateway = new ApolloGateway();
 
 const server = new ApolloServer({
   gateway,
   subscriptions: false,
-  tracing: true,
-  context: ({ req }) => {
-    console.log(req.headers);
-    return {};
-  },
+  // tracing: true,
+  // context: ({ req }) => {
+  //   console.log(req.headers);
+  //   return {};
+  // },
 });
 
 server.listen({ port: 4000 }).then(({ url }) => {
