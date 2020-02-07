@@ -44,4 +44,11 @@ yarn lerna add @apollo/gateway --scope={@tcne/origo-booking,@tcne/origo-gateway}
 ## Stuff that needs fixin'
 * Headers pass through OR context
 
+## More stuff
+* Loggning - flytta Sebastians jobb i checkout till ett repo och ta in det i origo2 för att kunna ha traceId mellan apparna
+* Snackis: CI och CD - plus strategier för versioner osv.
+* LaunchDarkly - hämta allt och lägg på context eller låt varje resolver sköta det själv?
+* Loglevel-lyssnare som lyssnar på loglevel-flagga i LD
+
+
 Istället för att bara exportera server: exportera "constructor" och ha två saker i returnerat objekt 
