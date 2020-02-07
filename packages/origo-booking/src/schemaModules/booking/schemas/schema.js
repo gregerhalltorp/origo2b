@@ -9,6 +9,7 @@ const typeDefs = gql`
   type Booking @key(fields: "id") {
     id: ID!
     modelVersion: Int
+    isThisWorking: Boolean
     passengers: [Passenger]
     extraGroups(views: [ID]!, extraGroupKeys: [ID]): [PassengerExtraGroup]
   }
@@ -56,6 +57,7 @@ const resolvers = {
       console.log('__resolveReference');
       return dataSources.BH2.getBooking(b.id);
     },
+    isThisWorking: () => true,
     id: ({ bookingId }) => bookingId,
     passengers: passengersResolver,
     extraGroups: extraGroupsResolver,

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { ApolloServer } from 'apollo-server';
-import { ApolloGateway } from '@apollo/gateway';
+import { ApolloGateway, RemoteGraphQLDataSource } from '@apollo/gateway';
 
 // TODO: Bör denna hårdkodning tas bort?
 // Vore bra att kunna deploya en ny service utan att behöva deploya gateway samtidigt
@@ -13,7 +13,12 @@ import { ApolloGateway } from '@apollo/gateway';
 //     { name: 'search', url: 'http://localhost:4002' },
 //     // { name: 'payments', url: 'http://localhost:4002' },
 //   ],
-//   debug: true,
+//   // debug: true,
+//   // experimental_updateServiceDefinitions: async config => {
+//   //   console.log(new Date(), config);
+//   //   return null;
+//   // },
+//   experimental_pollInterval: 10000,
 // });
 const gateway = new ApolloGateway();
 
