@@ -3,11 +3,6 @@ import base from './routes/base';
 import schemas from './routes/schemas';
 import variant from './routes/variant';
 
-function respond(req, res, next) {
-  res.send(`hello ${req.params.name}`);
-  next();
-}
-
 const server = createServer();
 server.use(plugins.queryParser());
 server.use(plugins.bodyParser());

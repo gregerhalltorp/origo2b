@@ -37,7 +37,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@tcne/react-utils": "^4.3.0",
+    "@tcne/react-utils": "^5.0.0",
     "moment": "^2.24.0"
   }
 }
